@@ -27,7 +27,7 @@ public class ControlLogin {
         this.contrasena = contrasena;
     }
    
-    public void iniciar() throws Exception{
+    public void iniciar(Funcionario f) throws Exception{
         if("".equals(usuario)){
             throw  new Exception("Debe agregar usuario");
         }
@@ -37,7 +37,6 @@ public class ControlLogin {
         if(!validar_email(usuario)){
             throw  new Exception("El usuario ingresado no tiene formato de correo");
         }       
-        Funcionario f = DAOFactory.getFuncionario().consultarID(usuario);
         
         if(f==null){
             throw new Exception("El usuario es incorrecto");

@@ -17,15 +17,12 @@ public class ControlBorrarPersona {
     String nombreCompleto = "";
     String cargo = "";
     String ciudad = "";
-    Personas person;
 
     public ControlBorrarPersona(){
     }
     
-        public void buscar(String documento) throws Exception {
-        validarDato(documento,"Documento");
-        int auxDoc = Integer.parseInt(documento);
-        person = DAOFactory.getPersona().consultarID(auxDoc);
+        public void buscar(Personas person) throws Exception {
+        
         if(person == null){
             throw new Exception("Documento no existe");
         }
@@ -37,7 +34,7 @@ public class ControlBorrarPersona {
         ciudad = person.getCiudad();
     }
         
-    private void validarDato(String dato,String nombreDato) throws Exception {
+    public void validarDato(String dato,String nombreDato) throws Exception {
         if("".equals(dato)){
             throw  new Exception(nombreDato+" esta vacio");
         }    
@@ -55,12 +52,4 @@ public class ControlBorrarPersona {
     public String getCiudad() {
         return ciudad;
     }
-    
-    public void borradoLogico() throws Exception{
-        person.setActivo((short)0);
-        EntityManagerHelper.beginTransaction();
-        DAOFactory.getPersona().insertar(person);
-        EntityManagerHelper.commit();
-        EntityManagerHelper.closeEntityManager();
-    }  
 }

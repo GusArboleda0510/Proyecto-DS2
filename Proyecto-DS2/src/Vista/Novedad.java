@@ -6,6 +6,10 @@
 package Vista;
 
 import Controlador.ControlNovedad;
+import co.edu.modelo.Novedades;
+import co.edu.modelo.Personas;
+import co.edu.univalle.persistencia.DAOFactory;
+import co.edu.univalle.persistencia.EntityManagerHelper;
 
 /**
  *
@@ -15,6 +19,7 @@ public class Novedad extends javax.swing.JFrame {
     ControlNovedad nov = new ControlNovedad();
     //funcionario@gmail.com
     String usuario;
+    Personas person;
     public Novedad(String u) {
         this.usuario=u;
         initComponents();
@@ -246,7 +251,8 @@ public class Novedad extends javax.swing.JFrame {
     private void EscuchaBuscar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EscuchaBuscar
          jLError.setVisible(false);
         try {
-            nov.buscar(jtDocumento.getText());
+            validacion(jtDocumento.getText());
+            nov.buscar(person);
             jLNombreCompleto.setText(nov.getNombreCompleto());
             jLCargo.setText(nov.getCargo());
         } catch (Exception e) {
@@ -261,12 +267,18 @@ public class Novedad extends javax.swing.JFrame {
         jLError.setVisible(false);
 
         try {     
-            nov.buscar(jtDocumento.getText());
+            validacion(jtDocumento.getText());
+            nov.buscar(person);
             String datos[] = {jtDocumento.getText(),jtTemperatura.getText(),
                             (String)jCEnfermedades.getSelectedItem(),
                             (String)jCNinios.getSelectedItem(),(String)jCMayores.getSelectedItem(),
                             jTAObservaciones.getText(),jLCargo.getText(),usuario};
-            nov.guardarBD(datos);
+            nov.validarDato(jtTemperatura.getText(), "Temperatura");
+            Novedades novedad = nov.guardarBD(datos,person);
+            EntityManagerHelper.beginTransaction();
+            DAOFactory.getNovedadesDAO().insertar(novedad);
+            EntityManagerHelper.commit();
+            EntityManagerHelper.closeEntityManager();
             dispose();
         } catch (Exception e) {
             mensaje(e.getMessage());
@@ -279,7 +291,6 @@ public class Novedad extends javax.swing.JFrame {
     private void EscucharCerrar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EscucharCerrar
         dispose();
     }//GEN-LAST:event_EscucharCerrar
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -316,5 +327,11 @@ public class Novedad extends javax.swing.JFrame {
     private void mensaje(String message) {
         jLError.setVisible(true);
         jLError.setText(message);
+    }
+
+    private void validacion(String documento) throws Exception {
+        nov.validarDato(documento, "Documento");
+        int auxDoc = Integer.parseInt(jtDocumento.getText());
+        person = DAOFactory.getPersona().consultarID(auxDoc);
     }
 }

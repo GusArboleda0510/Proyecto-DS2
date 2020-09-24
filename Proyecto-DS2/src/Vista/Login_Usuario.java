@@ -6,6 +6,8 @@
 package Vista;
 
 import Controlador.ControlLogin;
+import co.edu.modelo.Funcionario;
+import co.edu.univalle.persistencia.DAOFactory;
 
 /**
  *
@@ -150,8 +152,11 @@ ControlLogin cl;
     private void EscuchaInicioS(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EscuchaInicioS
     try {
             jl_error.setVisible(false);
+
             cl = new ControlLogin(jt_Usuario.getText(),jt_Contraseña.getText());
-            cl.iniciar();
+            
+            Funcionario f = DAOFactory.getFuncionario().consultarID(jt_Usuario.getText());
+            cl.iniciar(f);
             new Entrada_Salida(jt_Usuario.getText());
                     
         } catch (Exception e) {

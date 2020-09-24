@@ -6,6 +6,9 @@
 package Vista;
 
 import Controlador.ControlBorrarPersona;
+import co.edu.modelo.Personas;
+import co.edu.univalle.persistencia.DAOFactory;
+import co.edu.univalle.persistencia.EntityManagerHelper;
 
 /**
  *
@@ -13,6 +16,7 @@ import Controlador.ControlBorrarPersona;
  */
 public class BorrarPersona extends javax.swing.JFrame {
     ControlBorrarPersona cbp = new ControlBorrarPersona();
+    Personas person;
     public BorrarPersona() {
         initComponents();
         setVisible(true);
@@ -157,7 +161,10 @@ public class BorrarPersona extends javax.swing.JFrame {
     private void jBBuscarEscuchaBuscar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarEscuchaBuscar
         jLMensaje.setVisible(false);
         try {
-            cbp.buscar(jtDocumento.getText());
+            cbp.validarDato(jtDocumento.getText(),"Documento");
+            int auxDoc = Integer.parseInt(jtDocumento.getText());
+            person = DAOFactory.getPersona().consultarID(auxDoc);
+            cbp.buscar(person);
             jLNombreCompleto.setText(cbp.getNombreCompleto());
             jLCargo.setText(cbp.getCargo());
             jLCiudad.setText(cbp.getCiudad());
@@ -177,7 +184,7 @@ public class BorrarPersona extends javax.swing.JFrame {
         jLMensaje.setVisible(false);
         try {
             jBBuscar.doClick();
-            cbp.borradoLogico();
+            borradoLogico();
             mensaje("Usuario borrado con exito");
             limpiarTodo();
         } catch (Exception e) {
@@ -220,4 +227,11 @@ public class BorrarPersona extends javax.swing.JFrame {
         jLCiudad.setText("");
         jtDocumento.setText("");
     }
+    private void borradoLogico() throws Exception{
+        person.setActivo((short)0);
+        EntityManagerHelper.beginTransaction();
+        DAOFactory.getPersona().insertar(person);
+        EntityManagerHelper.commit();
+        EntityManagerHelper.closeEntityManager();
+    }  
 }

@@ -22,27 +22,23 @@ import javax.mail.MessagingException;
 public class ControlNovedad {
     String nombreCompleto = "";
     String cargo = "";
-    Personas person;
     Calendar calendario;
     String usuario="";
     public ControlNovedad(){
     }
 
-    public void buscar(String documento) throws Exception {
-        validarDato(documento,"Documento");
-        int auxDoc = Integer.parseInt(documento);
-        person = DAOFactory.getPersona().consultarID(auxDoc);
-        if(person == null){
+    public void buscar(Personas persona) throws Exception {
+        if(persona == null){
             throw new Exception("Documento no existe");
         }
-        if (person.getActivo()== 0) {
+        if (persona.getActivo()== 0) {
           throw  new Exception("Esta persona ha sido borrada del sistema");
         }
-        nombreCompleto = person.getNombre() +" "+ person.getApellido();
-        cargo = person.getCargo();
+        nombreCompleto = persona.getNombre() +" "+ persona.getApellido();
+        cargo = persona.getCargo();
     }
 
-    private void validarDato(String dato,String nombreDato) throws Exception {
+    public void validarDato(String dato,String nombreDato) throws Exception {
         if("".equals(dato)){
             throw  new Exception(nombreDato+" esta vacio");
         }    
@@ -59,12 +55,9 @@ public class ControlNovedad {
         return cargo;
     } 
 
-     public void guardarBD(String[] datos) throws Exception {
-        validarDato(datos[1], "Temperatura");
+     public Novedades guardarBD(String[] datos,Personas person) throws Exception {
+        Novedades novedad = new Novedades();
         try {
-            int auxDoc = Integer.parseInt(datos[0]);
-            person = DAOFactory.getPersona().consultarID(auxDoc);
-            Novedades novedad = new Novedades();
             novedad.setDocumento(person);
             novedad.setTemperatura(datos[1]);
             novedad.setEnfermedadesPreexistente(datos[2]);
@@ -72,6 +65,7 @@ public class ControlNovedad {
             novedad.setConviveMayores(datos[4]);
             novedad.setObservaciones(datos[5]);
             usuario= datos[7];
+
             novedad.setUsuario(funcionario(usuario));
             
             SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
@@ -81,23 +75,20 @@ public class ControlNovedad {
 
             novedad.setFecha(fecha);
             novedad.setHora(hora);
-            
 
-            EntityManagerHelper.beginTransaction();
-            DAOFactory.getNovedadesDAO().insertar(novedad);
-            EntityManagerHelper.commit();
-            EntityManagerHelper.closeEntityManager();
 
         } catch (Exception e) {
             System.out.println("e = " + e);
          }
+        
         String destinos[] = obtenerDestinos(person.getCargo());
         for (String destino : destinos) {
             if(!destino.equals("-")){
-                enviarEmails(datos,destino);
+                enviarEmails(datos, destino, person);
             }
         }
 
+        return novedad;
     }
       private Funcionario funcionario(String f) throws Exception{
         Funcionario func = DAOFactory.getFuncionario().consultarID(f);
@@ -113,7 +104,7 @@ public class ControlNovedad {
     datos[6] = cargo
     */
 
-    private void enviarEmails(String[] datos, String destino) throws MessagingException {
+    private void enviarEmails(String[] datos, String destino, Personas person) throws MessagingException {
         
         String origen = "porteriaunivalle01@gmail.com";
         String claveOrigen = "01porteriaunivalle";
