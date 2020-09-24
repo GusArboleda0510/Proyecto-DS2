@@ -71,7 +71,7 @@ public class Reporte extends javax.swing.JFrame {
         jLabel5.setBounds(0, 100, 500, 60);
 
         reporteEntrada.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        reporteEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/imgReporte.png"))); // NOI18N
+        reporteEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/imgReporteEntradas.png"))); // NOI18N
         reporteEntrada.setContentAreaFilled(false);
         reporteEntrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,10 +79,10 @@ public class Reporte extends javax.swing.JFrame {
             }
         });
         jPanel1.add(reporteEntrada);
-        reporteEntrada.setBounds(300, 380, 160, 60);
+        reporteEntrada.setBounds(250, 380, 210, 80);
 
         reporteNovedad.setBackground(new java.awt.Color(255, 255, 255));
-        reporteNovedad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/imgReporte.png"))); // NOI18N
+        reporteNovedad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/imgReporteNovedad.png"))); // NOI18N
         reporteNovedad.setContentAreaFilled(false);
         reporteNovedad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,7 +90,7 @@ public class Reporte extends javax.swing.JFrame {
             }
         });
         jPanel1.add(reporteNovedad);
-        reporteNovedad.setBounds(60, 380, 160, 60);
+        reporteNovedad.setBounds(20, 380, 210, 80);
 
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

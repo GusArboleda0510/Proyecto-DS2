@@ -226,9 +226,9 @@ public class Novedad extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(jPanel1);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 570));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 620));
 
-        setSize(new java.awt.Dimension(518, 617));
+        setSize(new java.awt.Dimension(518, 667));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
