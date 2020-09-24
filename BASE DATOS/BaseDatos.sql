@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         10.4.6-MariaDB - mariadb.org binary distribution
+-- Versión del servidor:         10.4.13-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win64
--- HeidiSQL Versión:             10.3.0.5771
+-- HeidiSQL Versión:             11.0.0.5919
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -25,8 +25,9 @@ CREATE TABLE IF NOT EXISTS `facultades` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Volcando datos para la tabla ds2.facultades: ~7 rows (aproximadamente)
+DELETE FROM `facultades`;
 /*!40000 ALTER TABLE `facultades` DISABLE KEYS */;
-INSERT IGNORE INTO `facultades` (`idFacultad`, `nombre`, `correo`) VALUES
+INSERT INTO `facultades` (`idFacultad`, `nombre`, `correo`) VALUES
 	(1, 'Ciencias de la Administracion', 'becerra.alejandra@correounivalle.edu.co'),
 	(2, 'Ciencias naturales y exactas', 'gustavo.arboleda@correounivalle.edu.co'),
 	(3, 'Ciencias sociales y economicas', 'kevin.cuadros@correounivalle.edu.co'),
@@ -43,9 +44,10 @@ CREATE TABLE IF NOT EXISTS `funcionario` (
   PRIMARY KEY (`usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla ds2.funcionario: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla ds2.funcionario: ~1 rows (aproximadamente)
+DELETE FROM `funcionario`;
 /*!40000 ALTER TABLE `funcionario` DISABLE KEYS */;
-INSERT IGNORE INTO `funcionario` (`usuario`, `contraseña`) VALUES
+INSERT INTO `funcionario` (`usuario`, `contraseña`) VALUES
 	('funcionario@gmail.com', '123');
 /*!40000 ALTER TABLE `funcionario` ENABLE KEYS */;
 
@@ -63,8 +65,9 @@ CREATE TABLE IF NOT EXISTS `info_mail` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Volcando datos para la tabla ds2.info_mail: ~1 rows (aproximadamente)
+DELETE FROM `info_mail`;
 /*!40000 ALTER TABLE `info_mail` DISABLE KEYS */;
-INSERT IGNORE INTO `info_mail` (`id_datos`, `destino`, `clave_destino`, `host1`, `host2`, `puerto1`, `puerto2`, `correo_admin`) VALUES
+INSERT INTO `info_mail` (`id_datos`, `destino`, `clave_destino`, `host1`, `host2`, `puerto1`, `puerto2`, `correo_admin`) VALUES
 	(1, 'porteriaunivalle01@gmail.com', '01porteriaunivalle', 'mail.smtp.host', 'smtp.gmail.com', 'mail.smtp.port', '587', 'gustavo.arboleda@correounivalle.edu.co');
 /*!40000 ALTER TABLE `info_mail` ENABLE KEYS */;
 
@@ -79,19 +82,29 @@ CREATE TABLE IF NOT EXISTS `novedades` (
   `observaciones` varchar(50) NOT NULL DEFAULT '',
   `fecha` date NOT NULL,
   `hora` time NOT NULL,
-  `usuario` varchar(50) NOT NULL DEFAULT '',
+  `usuario` varchar(50) DEFAULT '',
   PRIMARY KEY (`codigo`),
   KEY `documento` (`documento`),
   KEY `FK_novedades_funcionario` (`usuario`),
   CONSTRAINT `FK_novedades_funcionario` FOREIGN KEY (`usuario`) REFERENCES `funcionario` (`usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_novedades_personas` FOREIGN KEY (`documento`) REFERENCES `personas` (`documento`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla ds2.novedades: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla ds2.novedades: ~11 rows (aproximadamente)
+DELETE FROM `novedades`;
 /*!40000 ALTER TABLE `novedades` DISABLE KEYS */;
-INSERT IGNORE INTO `novedades` (`codigo`, `documento`, `temperatura`, `enfermedades_preexistente`, `convive_menores`, `convive_mayores`, `observaciones`, `fecha`, `hora`, `usuario`) VALUES
+INSERT INTO `novedades` (`codigo`, `documento`, `temperatura`, `enfermedades_preexistente`, `convive_menores`, `convive_mayores`, `observaciones`, `fecha`, `hora`, `usuario`) VALUES
 	(4, 100, '10', 'Ninguno', 'SI', 'SI', '0000', '2019-12-30', '21:35:25', 'funcionario@gmail.com'),
-	(5, 100, '15', 'Ninguno', 'SI', 'SI', 'Final', '2019-12-30', '21:45:30', 'funcionario@gmail.com');
+	(5, 100, '15', 'Ninguno', 'SI', 'SI', 'Final', '2019-12-30', '21:45:30', 'funcionario@gmail.com'),
+	(6, 100, '789', 'Ninguno', 'SI', 'SI', 'tales1', '2019-12-30', '14:28:17', 'funcionario@gmail.com'),
+	(7, 100, '789', 'Ninguno', 'SI', 'SI', 'tales2', '2019-12-30', '14:31:41', 'funcionario@gmail.com'),
+	(8, 100, '789', 'Ninguno', 'SI', 'SI', 'tales4', '2020-08-29', '14:35:11', 'funcionario@gmail.com'),
+	(9, 100, '123', 'Ninguno', 'SI', 'SI', 'esto es una prueba', '2020-08-29', '15:13:04', 'funcionario@gmail.com'),
+	(10, 100, '213', 'Ninguno', 'SI', 'SI', 'prueba2', '2020-08-29', '15:20:06', 'funcionario@gmail.com'),
+	(11, 100, '1323', 'Ninguno', 'SI', 'SI', 'prueba3', '2020-08-29', '15:21:32', 'funcionario@gmail.com'),
+	(12, 100, '112', 'Ninguno', 'SI', 'SI', 'prueba4', '2020-08-29', '15:25:21', 'funcionario@gmail.com'),
+	(13, 100, '8788978887', 'Ninguno', 'SI', 'SI', '', '2020-09-21', '22:26:03', 'funcionario@gmail.com'),
+	(14, 100, '4655', 'Ninguno', 'SI', 'SI', '', '2020-09-23', '22:17:06', NULL);
 /*!40000 ALTER TABLE `novedades` ENABLE KEYS */;
 
 -- Volcando estructura para tabla ds2.personas
@@ -111,9 +124,10 @@ CREATE TABLE IF NOT EXISTS `personas` (
   CONSTRAINT `FK_personas_programas` FOREIGN KEY (`programa`) REFERENCES `programas` (`idPrograma`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla ds2.personas: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla ds2.personas: ~2 rows (aproximadamente)
+DELETE FROM `personas`;
 /*!40000 ALTER TABLE `personas` DISABLE KEYS */;
-INSERT IGNORE INTO `personas` (`documento`, `tipo_documento`, `nombre`, `apellido`, `telefono`, `direccion`, `ciudad`, `cargo`, `programa`, `activo`) VALUES
+INSERT INTO `personas` (`documento`, `tipo_documento`, `nombre`, `apellido`, `telefono`, `direccion`, `ciudad`, `cargo`, `programa`, `activo`) VALUES
 	(100, 'TI', 'Aleja', 'Becerra', 315, 'cr 7D #31-15', 'Buga', 'Estudiante', 3841, 1),
 	(108, 'CC', 'Alejandra', 'Becerra', 315606, 'av 4', 'Buga', 'Docente', 3744, 0);
 /*!40000 ALTER TABLE `personas` ENABLE KEYS */;
@@ -129,8 +143,9 @@ CREATE TABLE IF NOT EXISTS `programas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Volcando datos para la tabla ds2.programas: ~28 rows (aproximadamente)
+DELETE FROM `programas`;
 /*!40000 ALTER TABLE `programas` DISABLE KEYS */;
-INSERT IGNORE INTO `programas` (`idPrograma`, `idFacultad`, `nombrePrograma`) VALUES
+INSERT INTO `programas` (`idPrograma`, `idFacultad`, `nombrePrograma`) VALUES
 	(2131, 2, 'Tecnología Química'),
 	(2635, 6, 'Tecnología en atención prehospitalaria'),
 	(2710, 5, 'Tecnología en electronica'),
@@ -171,13 +186,16 @@ CREATE TABLE IF NOT EXISTS `registro_entrada_salida` (
   PRIMARY KEY (`control`),
   KEY `cedula` (`cedula`),
   CONSTRAINT `FK__personas` FOREIGN KEY (`cedula`) REFERENCES `personas` (`documento`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla ds2.registro_entrada_salida: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla ds2.registro_entrada_salida: ~4 rows (aproximadamente)
+DELETE FROM `registro_entrada_salida`;
 /*!40000 ALTER TABLE `registro_entrada_salida` DISABLE KEYS */;
-INSERT IGNORE INTO `registro_entrada_salida` (`control`, `horaEntrada`, `fecha`, `cedula`, `horaSalida`) VALUES
+INSERT INTO `registro_entrada_salida` (`control`, `horaEntrada`, `fecha`, `cedula`, `horaSalida`) VALUES
 	(2, '18:36:17', '2020-08-22', 100, '18:45:34'),
-	(6, '19:18:12', '2020-08-22', 100, '19:19:54');
+	(6, '19:18:12', '2020-08-22', 100, '19:19:54'),
+	(10, '22:12:43', '2020-09-21', 100, '22:21:35'),
+	(11, '22:33:15', '2020-09-21', 100, '22:33:32');
 /*!40000 ALTER TABLE `registro_entrada_salida` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
